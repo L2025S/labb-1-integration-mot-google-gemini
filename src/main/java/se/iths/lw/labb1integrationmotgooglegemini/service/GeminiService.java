@@ -1,3 +1,57 @@
+
+
+package se.iths.lw.labb1integrationmotgooglegemini.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Map;
+
+@Service
+public class GeminiService {
+    private final WebClient webClient;
+    private final String apiKey;
+
+    public GeminiService(@Value("${GOOGLE_API_KEY:#{null}}") String apiKey) {
+        String resolvedKey = apiKey;
+        if (resolvedKey == null || resolvedKey.isBlank()) {
+            resolvedKey = System.getenv("GOOGLE_API_KEY");
+        }
+        this.apiKey = resolvedKey;
+
+        this.webClient = WebClient.builder()
+                .baseUrl("https://generativelanguage.googleapis.com/v1beta")
+                .build();
+    }
+
+    public String askGemini(String prompt) {
+        Map<String, Object> body = Map.of(
+                "contents", new Object[]{
+                        Map.of("parts", new Object[]{
+                                Map.of("text", prompt)
+                        })
+                }
+        );
+
+        Map response = webClient.post()
+                .uri(uri -> uri
+                        .path("/models/gemini-3-flash-preview:generateContent")
+                        .queryParam("key", apiKey)
+                        .build())
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        var candidates = (java.util.List<Map<String, Object>>) response.get("candidates");
+        var content = (Map<String, Object>) candidates.get(0).get("content");
+        var parts = (java.util.List<Map<String, Object>>) content.get("parts");
+
+        return (String) parts.get(0).get("text");
+    }
+}
+/*
 package se.iths.lw.labb1integrationmotgooglegemini.service;
 
 import org.slf4j.Logger;
@@ -155,3 +209,4 @@ public class GeminiService {
 }
 
 
+*/
