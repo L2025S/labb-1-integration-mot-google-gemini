@@ -10,7 +10,7 @@
     </parent>
     <groupId>se.iths.lw</groupId>
     <artifactId>labb-1-integration-mot-google-gemini</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>labb-1-integration-mot-google-gemini</name>
     <description>labb-1-integration-mot-google-gemini</description>
     <url/>
@@ -96,7 +96,7 @@
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Maven: 在 dependencyManagement 中添加 -->
+        <!-- Spring boot Ai -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-bom</artifactId>
@@ -107,6 +107,23 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Google Gemini -->
+
+            <dependency>
+                <groupId>com.google.genai</groupId>
+                <artifactId>google-genai</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+        <!--Netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <version>4.2.12.Final</version>
+            <classifier>osx-aarch_64</classifier>
             <scope>runtime</scope>
         </dependency>
 

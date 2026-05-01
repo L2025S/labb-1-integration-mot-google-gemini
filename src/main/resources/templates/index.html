@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Chat</title>
+</head>
+<body>
+<h1>Gemini Chat</h1>
+
+
+<div th:if="${!loggedIn}">
+  <p>Logga in för att ställa frågor.</p>
+  <a href="/oauth2/authorization/google">
+      <button>Logga in med Google </button></a>
+</div>
+
+
+
+<div th:if="${loggedIn}">
+     <div>
+     <img th:src="${avatar != null? avatar : 'https://via.placeholder.com/50'}" alt="avatar" width="80" style="border-radius: 50%">
+         <span>Inloggad</span>
+     </div>
+
+
+    <div>
+     <form th:action="@{/ask}" method="post">
+        <textarea name="prompt" rows="4" cols="60" placeholder="Skriv din fråga här..."></textarea><br>
+        <button type="submit">Skicka</button>
+    </form>
+    </div>
+
+
+
+    <div th:if="${lastAnswer != null}">
+        <h2>Senaste svar</h2>
+        <p><strong>Fråga:</strong><span th:text="${lastQuestion}"></span></p>
+        <p><strong>Svar:</strong></p>
+        <pre th:text="${lastAnswer}"></pre>
+    </div>
+
+
+
+
+    
+    <div th:if="${history != null and !history.isEmpty()}">
+        <h2>Historik</h2>
+        <table border="1">
+            <tr>
+                <th>Tid</th>
+                <th>Fråga</th>
+                <th>Svar</th>
+            </tr>
+            <tr th:each=" rec : ${history}">
+                <td th:text="${rec.formattedCreatedAt}">2026-0101 12:00:00</td>
+                <td th:text="${rec.question}"></td>
+                <td><pre th:text="${rec.answer}"></pre></td>
+            </tr>
+        </table>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logga ut</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

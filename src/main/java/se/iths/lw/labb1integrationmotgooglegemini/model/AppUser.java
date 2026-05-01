@@ -1,16 +1,15 @@
 package se.iths.lw.labb1integrationmotgooglegemini.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -26,7 +25,9 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique= true)
     private String googleId;
+    @Column(unique = true)
     private String email;
     private String avatarUrl;
     private String refreshToken;
